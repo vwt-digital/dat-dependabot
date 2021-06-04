@@ -37,6 +37,10 @@ class AlertProcessor(object):
     def process_alert(self, alert, gobits_metadata):
         dependabot_alert = self.get_dependabot_alerts(alert)
         dependabot_messages = self.create_messages(alert, dependabot_alert)
+        if not dependabot_messages:
+            logging.info(
+                f"No dependabot alerts were found on repository {alert['repository']}"
+            )
         metadata = [Gobits().to_json()]
         metadata.append(gobits_metadata)
         for dependabot_message in dependabot_messages:
