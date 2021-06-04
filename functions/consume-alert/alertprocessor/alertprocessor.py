@@ -41,6 +41,7 @@ class AlertProcessor(object):
             logging.info(
                 f"No dependabot alerts were found on repository {alert['repository']}"
             )
+            return True
         metadata = [Gobits().to_json()]
         metadata.append(gobits_metadata)
         for dependabot_message in dependabot_messages:
