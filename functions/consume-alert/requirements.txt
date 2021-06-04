@@ -21,7 +21,7 @@ pyparsing==2.4.7
 pytz==2021.1
 PyYAML==5.4.1
 requests==2.25.1
-rsa==4.7.2
+rsa==4.7
 six==1.16.0
 typing-extensions==3.10.0.0
 typing-inspect==0.6.0
