@@ -26,7 +26,7 @@ class AlertProcessor(object):
             sys.exit(1)
 
     def process(self, payload):
-        alerts = payload["github-events"]
+        alerts = payload["github-issues"]
         gobits_metadata = payload["gobits"]
         for alert in alerts:
             if self.process_alert(alert, gobits_metadata) is False:
