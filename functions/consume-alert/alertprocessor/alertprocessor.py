@@ -37,14 +37,15 @@ class AlertProcessor(object):
     def process_alert(self, alert, gobits_metadata):
         dependabot_alert = self.get_dependabot_alerts(alert)
         dependabot_messages = self.create_messages(alert, dependabot_alert)
-        print(dependabot_messages)
         metadata = [Gobits().to_json()]
         metadata.append(gobits_metadata)
-        print(metadata)
-        # return_bool_publish_topic = self.publish_to_topic(new_message, metadata)
-        # if not return_bool_publish_topic:
-        #     return False
-        # return True
+        for dependabot_message in dependabot_messages:
+            return_bool_publish_topic = self.publish_to_topic(
+                dependabot_message, metadata
+            )
+            if not return_bool_publish_topic:
+                return False
+        return True
 
     def get_dependabot_alerts(self, alert):
         token = get_secret(self.project_id, self.github_token_secret_id)
@@ -128,15 +129,16 @@ class AlertProcessor(object):
             )
             if date:
                 future.add_done_callback(
-                    lambda x: logging.debug(
-                        "Published parsed email with date {}".format(date)
-                    )
+                    lambda x: logging.debug("Published parsed github alert")
                 )
-            future.add_done_callback(lambda x: logging.debug("Published parsed email"))
-            logging.info(f"Publishing email with ID {message['id']}")
+            future.add_done_callback(
+                lambda x: logging.debug("Published parsed github alert")
+            )
+            logging.info("Published parsed github alert")
             return True
         except Exception as e:
             logging.exception(
-                "Unable to publish parsed email " + "to topic because of {}".format(e)
+                "Unable to publish parsed github alert "
+                + "to topic because of {}".format(e)
             )
         return False
