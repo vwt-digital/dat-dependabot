@@ -2,9 +2,9 @@ import base64
 import json
 import logging
 
-from alertprocessor import EmailProcessor
+from alertprocessor import AlertProcessor
 
-parser = EmailProcessor()
+parser = AlertProcessor()
 
 logging.basicConfig(level=logging.INFO)
 
