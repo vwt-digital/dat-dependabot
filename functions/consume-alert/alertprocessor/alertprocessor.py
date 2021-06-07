@@ -43,7 +43,7 @@ class AlertProcessor(object):
             )
             return True
         metadata = [Gobits().to_json()]
-        metadata.append(gobits_metadata)
+        metadata.extend(gobits_metadata)
         for dependabot_message in dependabot_messages:
             return_bool_publish_topic = self.publish_to_topic(
                 dependabot_message, metadata
@@ -122,7 +122,7 @@ class AlertProcessor(object):
         date = ""
         if "received_on" in message:
             date = message["received_on"]
-        msg = {"gobits": [gobits], "parsed_alert": message}
+        msg = {"gobits": gobits, "parsed_alert": message}
         try:
             # Publish to topic
             publisher = pubsub_v1.PublisherClient()
