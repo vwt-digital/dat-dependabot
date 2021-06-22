@@ -35,7 +35,10 @@ class AlertProcessor(object):
                 logging.info("Message is processed")
 
     def process_alert(self, alert, gobits_metadata):
-        dependabot_alert = self.get_dependabot_alerts(alert)
+        dependabot_alert = self.get_dependabot_alert(alert)
+        if not dependabot_alert["data"]["repository"]:
+            logging.info(f"Github repository {alert['repository']} could not be found.")
+            return True
         dependabot_messages = self.create_messages(alert, dependabot_alert)
         if not dependabot_messages:
             logging.info(
@@ -52,7 +55,7 @@ class AlertProcessor(object):
                 return False
         return True
 
-    def get_dependabot_alerts(self, alert):
+    def get_dependabot_alert(self, alert):
         token = get_secret(self.project_id, self.github_token_secret_id)
         header = {"Authorization": f"Bearer {token}"}
         repository_list = alert["repository"].split("/")
